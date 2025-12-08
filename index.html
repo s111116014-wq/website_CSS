@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>個人網站 - [您的中文姓名]</title>
+    <!-- 引入 Bootstrap 5 CSS (作業要求) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 引入 Font Awesome (用於圖示) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        /* * FB 風格自定義 CSS 
+         * 覆蓋部分 Bootstrap 樣式以達到 FB 的視覺效果
+         */
+        
+        :root {
+            --fb-bg-color: #f0f2f5;
+            --fb-card-bg: #ffffff;
+            --fb-blue: #1877f2;
+            --fb-text-primary: #050505;
+            --fb-text-secondary: #65676b;
+            --fb-hover-bg: #f2f2f2;
+        }
+
+        body {
+            background-color: var(--fb-bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--fb-text-primary);
+            padding-top: 56px; /* 為 Navbar 留空間 */
+        }
+
+        /* 導覽列樣式 */
+        .navbar {
+            background-color: var(--fb-card-bg);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            height: 56px;
+        }
+        
+        .navbar-brand {
+            color: var(--fb-blue) !important;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .nav-link {
+            color: var(--fb-text-secondary) !important;
+            font-weight: 600;
+            padding: 0px 20px !important;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background-color: var(--fb-hover-bg);
+            border-radius: 8px;
+        }
+
+        .nav-link.active {
+            color: var(--fb-blue) !important;
+            border-bottom: 3px solid var(--fb-blue);
+            border-radius: 0;
+        }
+
+        .nav-icon-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #e4e6eb;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-decoration: none;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        /* 封面與個人資料區 */
+        .profile-header {
+            background: linear-gradient(to bottom, #7f7f7f, #ffffff); /* 漸層背景代替封面圖，可換成圖片 */
+            background-color: var(--fb-card-bg);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .cover-photo {
+            height: 350px;
+            background-color: #444; /* 封面圖佔位 */
+            background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            position: relative;
+        }
+
+        .profile-section {
+            padding-bottom: 16px;
+            position: relative;
+        }
+
+        .profile-pic-container {
+            position: absolute;
+            top: -130px; /* 將頭像向上拉到封面圖上 */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .profile-pic {
+            width: 168px;
+            height: 168px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .profile-name {
+            margin-top: 40px; /* 給頭像留空間 */
+            text-align: center;
+        }
+
+        .profile-name h1 {
+            font-weight: bold;
+            font-size: 32px;
+            margin-bottom: 0;
+        }
+
+        .profile-bio {
+            text-align: center;
+            color: var(--fb-text-secondary);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        /* 標籤導覽 (Tabs) */
+        .profile-tabs {
+            border-top: 1px solid #ced0d4;
+            padding-top: 4px;
+        }
+        
+        .profile-tabs .nav-link {
+            height: 48px;
+            border-radius: 4px !important;
+            border-bottom: none;
+            color: var(--fb-text-secondary) !important;
+        }
+        
+        .profile-tabs .nav-link.active {
+            color: var(--fb-blue) !important;
+            border-bottom: 3px solid var(--fb-blue);
+            border-radius: 0 !important;
+            background: none;
+        }
+
+        /* 卡片通用樣式 (模仿 FB 貼文/區塊) */
+        .fb-card {
+            background-color: var(--fb-card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin-bottom: 16px;
+            padding: 16px;
+        }
+
+        .fb-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .fb-card-title {
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0;
+        }
+
+        /* 專案展示樣式 */
+        .project-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        
+        .project-img:hover {
+            transform: scale(1.02);
+            cursor: pointer;
+        }
+
+        /* 左側資訊欄 */
+        .intro-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            color: var(--fb-text-primary);
+        }
+        
+        .intro-item i {
+            width: 24px;
+            color: #8c939d;
+            margin-right: 10px;
+            text-align: center;
+        }
+
+        /* RWD 調整 */
+        @media (min-width: 992px) {
+            .profile-pic-container {
+                left: 32px;
+                transform: none;
+                top: -30px;
+            }
+            
+            .profile-name {
+                text-align: left;
+                margin-left: 190px;
+                margin-top: 10px;
+            }
+
+            .profile-bio {
+                text-align: left;
+                margin-left: 190px;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#profile-nav" data-bs-offset="100">
+
+    <!-- 頂部導覽列 (Navbar) -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container-fluid container-lg">
+            <!-- LOGO: 使用 FB 藍色風格 -->
+            <a class="navbar-brand" href="#"><i class="fab fa-facebook"></i> MyPortfolio</a>
+            
+            <!-- 手機版漢堡選單按鈕 -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- 導覽連結 -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home"><i class="fas fa-home me-2 d-lg-none"></i>首頁</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about"><i class="fas fa-user me-2 d-lg-none"></i>關於我</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#portfolio"><i class="fas fa-code me-2 d-lg-none"></i>專案/作品集</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#others"><i class="fas fa-star me-2 d-lg-none"></i>其他...</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact"><i class="fas fa-envelope me-2 d-lg-none"></i>聯絡我</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 右側裝飾性圖示 (Messenger, Bell, User) -->
+            <div class="d-none d-lg-flex">
+                <div class="nav-icon-circle"><i class="fas fa-th"></i></div>
+                <div class="nav-icon-circle"><i class="fab fa-facebook-messenger"></i></div>
+                <div class="nav-icon-circle"><i class="fas fa-bell"></i></div>
+                <div class="nav-icon-circle"><img src="https://via.placeholder.com/40" class="rounded-circle" style="width:100%; height:100%"></div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <div class="container container-lg px-0 px-lg-3" id="home">
+        
+        <!-- 頂部封面與個人資料區 -->
+        <div class="profile-header rounded-bottom-3">
+            <!-- 封面照片 -->
+            <div class="cover-photo">
+                <!-- 這裡可以放一張風景照作為封面 -->
+            </div>
+            
+            <div class="container profile-section">
+                <!-- 大頭貼 -->
+                <div class="profile-pic-container">
+                    <!-- 請替換成您的個人大頭照 src="您的圖片路徑" -->
+                    <img src="https://via.placeholder.com/168" alt="Profile Picture" class="profile-pic">
+                </div>
+
+                <!-- 姓名與簡介 -->
+                <div class="profile-name">
+                    <!-- 【必填】評分識別用中文姓名 -->
+                    <h1>王小明 (您的姓名)</h1> 
+                    <p class="text-secondary fw-bold mb-1">網站設計初學者 | 學生</p>
+                    <div class="profile-bio">
+                        <p>這是我為了 website_CSS 作業建立的個人網站，歡迎參觀！</p>
+                    </div>
+                </div>
+
+                <hr class="d-none d-lg-block my-3">
+
+                <!-- 次級導覽 (Tabs) - 視覺裝飾，實際連結同上 -->
+                <ul class="nav profile-tabs justify-content-center justify-content-lg-start" id="profile-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#home">貼文 (首頁)</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">關於</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#portfolio">相片 (作品)</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#others">影片 (其他)</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">打卡 (聯絡)</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 內容佈局: 左側欄 (簡介) + 右側欄 (貼文/作品) -->
+        <div class="row g-3">
+            
+            <!-- 左側欄：關於我 (Sticky) -->
+            <div class="col-lg-5" id="about">
+                <div class="fb-card sticky-top" style="top: 70px; z-index: 1;">
+                    <div class="fb-card-header">
+                        <h2 class="fb-card-title">關於我 (簡介)</h2>
+                    </div>
+                    <div class="card-body">
+                        <p>嗨！我是[您的名字]，目前就讀於[您的學校/系所]。這學期我正在修習網頁設計課程，這是我的期末專案。</p>
+                        
+                        <div class="intro-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>就讀於 <strong>某某大學</strong></span>
+                        </div>
+                        <div class="intro-item">
+                            <i class="fas fa-home"></i>
+                            <span>來自 <strong>台北市</strong></span>
+                        </div>
+                        <div class="intro-item">
+                            <i class="fas fa-heart"></i>
+                            <span>興趣是 <strong>寫程式、攝影、旅遊</strong></span>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-secondary" style="background-color: #e4e6eb; color: black; border:none; font-weight:600;">編輯詳細資料</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 技能區塊 (其他.... 可發揮部分) -->
+                <div class="fb-card" id="others">
+                    <div class="fb-card-header">
+                        <h2 class="fb-card-title">其他技能</h2>
+                        <a href="#" class="text-decoration-none">查看全部</a>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge rounded-pill text-bg-secondary p-2">HTML5</span>
+                        <span class="badge rounded-pill text-bg-secondary p-2">CSS3</span>
+                        <span class="badge rounded-pill text-bg-secondary p-2">Bootstrap</span>
+                        <span class="badge rounded-pill text-bg-secondary p-2">JavaScript</span>
+                        <span class="badge rounded-pill text-bg-secondary p-2">GitHub Pages</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側欄：作品集與動態 -->
+            <div class="col-lg-7">
+                
+                <!-- 模擬 "在想些什麼" 輸入框 (裝飾用) -->
+                <div class="fb-card">
+                    <div class="d-flex align-items-center">
+                        <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Avatar">
+                        <div class="flex-grow-1 bg-light rounded-pill px-3 py-2 text-secondary" style="cursor: pointer; background-color: #f0f2f5 !important;">
+                            在想些什麼？
+                        </div>
+                    </div>
+                    <hr class="my-2">
+                    <div class="d-flex justify-content-between px-4">
+                        <div class="text-secondary"><i class="fas fa-video text-danger me-2"></i>直播視訊</div>
+                        <div class="text-secondary"><i class="fas fa-images text-success me-2"></i>相片/影片</div>
+                        <div class="text-secondary"><i class="far fa-smile text-warning me-2"></i>感受/活動</div>
+                    </div>
+                </div>
+
+                <!-- 專案/作品集區塊 (模擬 FB 貼文樣式) -->
+                <div id="portfolio">
+                    
+                    <!-- 作品 1 -->
+                    <div class="fb-card">
+                        <div class="d-flex mb-2">
+                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Avatar">
+                            <div>
+                                <div class="fw-bold">[您的中文姓名]</div>
+                                <div class="text-secondary" style="font-size: 12px;">剛剛 · <i class="fas fa-globe-americas"></i></div>
+                            </div>
+                            <div class="ms-auto"><i class="fas fa-ellipsis-h"></i></div>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <p>【本學期相關作品】<br>這是我使用 HTML 和 CSS 製作的第一個靜態網頁作業。</p>
+                        </div>
+                        
+                        <!-- 作品圖片 -->
+                        <div class="bg-light d-flex justify-content-center align-items-center" style="min-height: 250px; border: 1px solid #ddd;">
+                            <img src="https://via.placeholder.com/600x300?text=Project+1+Screenshot" class="img-fluid" alt="作品一截圖">
+                        </div>
+                        
+                        <!-- 互動按鈕 -->
+                        <div class="d-flex justify-content-between mt-2 pt-2 border-top">
+                            <button class="btn btn-light flex-grow-1 text-secondary"><i class="far fa-thumbs-up me-1"></i> 讚</button>
+                            <button class="btn btn-light flex-grow-1 text-secondary"><i class="far fa-comment-alt me-1"></i> 留言</button>
+                            <a href="#" class="btn btn-light flex-grow-1 text-secondary"><i class="fas fa-share me-1"></i> 前往網頁</a>
+                        </div>
+                    </div>
+
+                    <!-- 作品 2 -->
+                    <div class="fb-card">
+                        <div class="d-flex mb-2">
+                            <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="Avatar">
+                            <div>
+                                <div class="fw-bold">[您的中文姓名]</div>
+                                <div class="text-secondary" style="font-size: 12px;">12月8日 · <i class="fas fa-globe-americas"></i></div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <p>【期中專案】<br>RWD 響應式網頁設計練習，嘗試模仿了知名品牌的 Landing Page。</p>
+                        </div>
+                        
+                        <div class="row g-1">
+                            <div class="col-6">
+                                <img src="https://via.placeholder.com/300x300?text=Mobile+View" class="img-fluid rounded-start" alt="手機版">
+                            </div>
+                            <div class="col-6">
+                                <img src="https://via.placeholder.com/300x300?text=Desktop+View" class="img-fluid rounded-end" alt="電腦版">
+                            </div>
+                        </div>
+
+                         <div class="d-flex justify-content-between mt-2 pt-2 border-top">
+                            <button class="btn btn-light flex-grow-1 text-secondary"><i class="far fa-thumbs-up me-1"></i> 讚</button>
+                            <button class="btn btn-light flex-grow-1 text-secondary"><i class="far fa-comment-alt me-1"></i> 留言</button>
+                            <a href="#" class="btn btn-light flex-grow-1 text-secondary"><i class="fas fa-share me-1"></i> 前往網頁</a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 聯絡我區塊 -->
+                <div class="fb-card" id="contact">
+                    <div class="fb-card-header">
+                        <h2 class="fb-card-title">聯絡我</h2>
+                    </div>
+                    <div class="card-body">
+                        <form onsubmit="alert('訊息已送出（模擬）！'); return false;">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">電子郵件</label>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">留言內容</label>
+                                <textarea class="form-control" id="message" rows="3" placeholder="有什麼想告訴我的嗎？" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 fw-bold" style="background-color: var(--fb-blue);">
+                                <i class="fab fa-facebook-messenger me-1"></i> 發送訊息
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 頁尾 -->
+        <footer class="text-center text-secondary py-4" style="font-size: 12px;">
+            <p>&copy; 2023 [您的中文姓名]. Website_CSS Project. <br>Design inspired by Facebook.</p>
+        </footer>
+
+    </div>
+
+    <!-- Bootstrap 5 JS Bundle (作業要求) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- 簡單的腳本：讓導覽列點擊時有 active 效果 -->
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // 移除所有 active
+                navLinks.forEach(l => l.classList.remove('active'));
+                // 加上當前 active
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
